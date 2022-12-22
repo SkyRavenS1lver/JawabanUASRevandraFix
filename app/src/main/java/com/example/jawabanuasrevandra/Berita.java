@@ -6,6 +6,15 @@ public class Berita {
     private String content;
     private String rilis;
     private String penulis;
+    private int umur;
+
+    public int getUmur() {
+        return umur;
+    }
+
+    public void setUmur(int umur) {
+        this.umur = umur;
+    }
 
     public String getPenulis() {
         return penulis;
@@ -66,8 +75,8 @@ public class Berita {
     public void setKey(String key) {
         this.key = key;
     }
-
-    public Berita(String judul, String rilis, String category, String content, String email, String penulis)
+    public Berita(){}
+    public Berita(String judul, String rilis, String category, String content, String email, String penulis, int umur)
     {
         this.judul = judul;
         this.content = content;
@@ -75,9 +84,10 @@ public class Berita {
         this.category = category;
         this.email = email;
         this.penulis = penulis;
+        this.umur = umur;
     }
     public static Berita convertData(Berita berita){
-        return new Berita(berita.getJudul(),berita.getRilis(),berita.getCategory(),berita.getContent(), berita.getEmail(), berita.getPenulis());
+        return new Berita(berita.getJudul(),berita.getRilis(),berita.getCategory(),berita.getContent(), berita.getEmail(), berita.getPenulis(), berita.getUmur());
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class ManageBerita extends AppCompatActivity {
     TextView judul;
-    EditText judulBerita,penulisBerita,rilisBerita, contentBerita;
+    EditText judulBerita,penulisBerita,rilisBerita, contentBerita, umur;
     FloatingActionButton edit,back,confirm,cancel;
     Spinner spinnerText;
 
@@ -28,6 +28,7 @@ public class ManageBerita extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_berita);
         judul = findViewById(R.id.JudulPage);
+        umur = findViewById(R.id.umurMin);
         Intent getter = getIntent();
         String mode = getter.getStringExtra("mode");
         String judulPage = getter.getStringExtra("judul");
@@ -58,7 +59,8 @@ public class ManageBerita extends AppCompatActivity {
                             spinnerText.getSelectedItem().toString(),
                             contentBerita.getText().toString(),
                             FirebaseController.getCurrentUserEmail(),
-                            FirebaseController.getCurrentUserFullName()
+                            FirebaseController.getCurrentUserFullName(),
+                            Integer.parseInt(umur.getText().toString())
                             );
                     FirebaseController.insertData(berita);
                     startActivity(intent);
@@ -89,6 +91,8 @@ public class ManageBerita extends AppCompatActivity {
         }
         judulBerita.setFocusable(bool);
         judulBerita.setFocusableInTouchMode(bool);
+        umur.setFocusable(bool);
+        umur.setFocusableInTouchMode(bool);
         spinnerText.setClickable(bool);
         contentBerita.setFocusable(bool);
         contentBerita.setFocusableInTouchMode(bool);

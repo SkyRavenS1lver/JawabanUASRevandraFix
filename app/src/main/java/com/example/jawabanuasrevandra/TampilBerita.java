@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,9 +82,11 @@ public class TampilBerita extends AppCompatActivity {
 //        listBerita =
         if (!preferensi.equals("Edit")){
         Model.beritaArrayList = FirebaseController.getBeritaFromGenre(preferensi);}
-        else{Model.beritaArrayList = FirebaseController.getBeritaFromEmaiil(FirebaseController.getCurrentUserEmail());}
+        else{
+            FirebaseController.getBeritaFromEmaiil(FirebaseController.getCurrentUserEmail());}
         dataChange();
         beritaAdapter = new BeritaAdapter(this, Model.beritaArrayList);
+        System.out.println(Model.beritaArrayList.size()+"--------");
         rvBerita.setLayoutManager(new LinearLayoutManager(this));
         rvBerita.setAdapter(beritaAdapter);
     }
