@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgphoto"
+    tools:context=".CariBerita"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:background="@drawable/bghp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
+            android:text="Cari Berita"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="50sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/bg_layar"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/btnY"
+                android:layout_marginVertical="15dp"
+                android:gravity="center"
+                android:text="Halo"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/namaUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="25dp"
+                android:gravity="center"
+                android:text="Nama User"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/btnY"
+                android:layout_marginVertical="15dp"
+                android:gravity="center"
+                android:text="Selamat Datang!"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="@dimen/elemenY"
+            android:layout_marginRight="@dimen/elemenX"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:paddingStart="@dimen/padText"
+                android:paddingTop="@dimen/padText"
+                android:paddingBottom="@dimen/padText"
+                android:text="Pilih preferensi Berita:"
+                android:textColor="@color/purple_500"
+                android:textSize="20sp"
+                tools:ignore="Deprecated,TextFields" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/elemenX"
+            android:layout_marginTop="@dimen/elemenY"
+            android:layout_marginRight="@dimen/elemenX"
+            android:background="@drawable/bg_et"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/Status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownVerticalOffset="65dp"
+                android:paddingStart="@dimen/padText"
+                android:paddingTop="@dimen/padText"
+                android:paddingBottom="@dimen/padText"
+                android:popupBackground="@drawable/bg_popup"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/purple_500" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/cari"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/elemenX"
+            android:layout_marginTop="@dimen/elemenY"
+            android:layout_marginRight="@dimen/elemenX"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@color/white"
+            android:text="cari"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:src="@drawable/ic_baseline_power_settings_new_24"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="50dp"
+        app:tint="@color/white"
+        android:layout_marginBottom="50dp"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/manageData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_blue_bright"
+        android:src="@drawable/ic_baseline_menu_book_24"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="40dp"
+        app:tint="@color/black"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="75dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

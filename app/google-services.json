@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "852795689254",
+    "project_id": "uaspapbrevan",
+    "storage_bucket": "uaspapbrevan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852795689254:android:af8728c475e8d9020899e7",
+        "android_client_info": {
+          "package_name": "com.example.jawabanuasrevandra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852795689254-v76jnkpqo2827ablofl1r67tfbtnhni3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMKAI94O08wy6jJA-WNErdw60FQjhjoew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852795689254-v76jnkpqo2827ablofl1r67tfbtnhni3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
