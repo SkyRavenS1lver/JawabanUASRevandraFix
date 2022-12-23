@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Boolean valid = true;
     public static String dateMessage;
     public static int umur;
+    private boolean response = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String fullnameUser = fullName.getText().toString();
                     available = false;
                     valid = true;
+                    response = true;
                     FirebaseController.userReference.child(usernameUser).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
@@ -101,33 +103,42 @@ public class RegisterActivity extends AppCompatActivity {
                                 username.setError("Username Sudah Terdaftar!");
                                 valid = false;
                             }
-                            }})
+                            response = true;
+
+                        }})
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(RegisterActivity.this,"Tidak dapat terhubung dengan internet", Toast.LENGTH_LONG).show();
                                     valid = false;
+                                    response = true;
                                 }
                             });
                     FirebaseController.userReference.orderByChild("email").equalTo(emailUser).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
                             if(dataSnapshot.hasChildren()){
+                                System.out.println("HOLAA!!");
                                 email.setError("Email sudah terdaftar!");
                                 valid = false;
-                            }}
+                            }response = true;}
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    System.out.println(e.toString());
                                     Toast.makeText(RegisterActivity.this,"Tidak dapat terhubung dengan internet", Toast.LENGTH_LONG).show();
                                     valid = false;
+                                    response = true;
                                 }
                             });
-                    if (valid){
+                    if (valid && response){
                         FirebaseController.firebaseAuth.createUserWithEmailAndPassword(emailUser,passwordUser).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                if (!available){
+                                System.out.println(available);
+                                System.out.println(response);
+                                System.out.println(valid);
+                                if (!available && response && valid){
                                     FirebaseController.userReference.child(usernameUser).child("email").setValue(emailUser);
                                     FirebaseController.userReference.child(usernameUser).child("umur").setValue(String.valueOf(umur));
                                     FirebaseController.firebaseAuth.signInWithEmailAndPassword(emailUser,passwordUser);
@@ -138,13 +149,16 @@ public class RegisterActivity extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             Toast.makeText(RegisterActivity.this, "Selamat Datang Pengguna Baru!",Toast.LENGTH_LONG).show();
                                             FirebaseController.currentUsername = usernameUser;
+                                            FirebaseController.currentUmur = umur;
                                             startActivity(new Intent(RegisterActivity.this, CariBerita.class));
                                             available = true;
+                                            response = false;
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             available = true;
+                                            response = false;
                                             Toast.makeText(RegisterActivity.this, "Mohon Maaf Terjadi Kesalahan!",Toast.LENGTH_LONG).show();
                                         }
                                     });
@@ -171,7 +185,6 @@ public class RegisterActivity extends AppCompatActivity {
         if (month > currentDate.get(Calendar.MONTH) || (month == currentDate.get(Calendar.MONTH) &&
                 day > currentDate.get(Calendar.DAY_OF_MONTH)))
         {umur--;}
-        System.out.println(umur);
         dateOfBirth.setText(dateMessage);
     }
 }

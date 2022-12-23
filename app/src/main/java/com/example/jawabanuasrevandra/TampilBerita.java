@@ -9,21 +9,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.jawabanuasrevandra.Favorite.Fav;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TampilBerita extends AppCompatActivity {
-    private RecyclerView rvBerita;
+    public static ExecutorService executorService;
+    public static RecyclerView rvBerita;
     FloatingActionButton addData;
     public static ArrayList<Berita> listBerita = new ArrayList<>();
-    private static BeritaAdapter beritaAdapter;
+    public static BeritaAdapter beritaAdapter;
     Drawable bgBaru;
     TextView judul;
     public static TextView message;
@@ -32,6 +34,8 @@ public class TampilBerita extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tampil_berita);
+
+        executorService = Executors.newSingleThreadExecutor();
         rvBerita = findViewById(R.id.rvBerita);
         judul = findViewById(R.id.JudulPage);
         addData = findViewById(R.id.addData);
@@ -63,11 +67,22 @@ public class TampilBerita extends AppCompatActivity {
             judul.setTextColor(getResources().getColor(R.color.white));
             message.setTextColor(getResources().getColor(R.color.white));
         }
+        else if(preferensi.equals("Fav")){
+            message.setText("Belum ada berita yang disukai");
+            judul.setText("Berita Yang Anda Sukai");
+            bgBaru = ContextCompat.getDrawable(bg.getContext(), R.drawable.bgphoto);
+            judul.setTextColor(getResources().getColor(R.color.text));
+            message.setTextColor(getResources().getColor(R.color.text));
+            getFavId(FirebaseController.getCurrentUserEmail());
+            getFavEmail();
+        }
         else if(preferensi.equals("Edit")){
+            judul.setText("List Semua\nArtikel Anda");
             bgBaru = ContextCompat.getDrawable(bg.getContext(), R.drawable.bgphoto);
             judul.setTextColor(getResources().getColor(R.color.text));
             message.setTextColor(getResources().getColor(R.color.text));
             addData.setVisibility(View.VISIBLE);
+
             addData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,16 +95,41 @@ public class TampilBerita extends AppCompatActivity {
         }
         bg.setBackground(bgBaru);
 //        listBerita =
-        if (!preferensi.equals("Edit")){
-        Model.beritaArrayList = FirebaseController.getBeritaFromGenre(preferensi);}
+        if (!preferensi.equals("Edit") && !preferensi.equals("Fav")){
+//        Model.beritaArrayList =
+                FirebaseController.getBeritaFromGenre(preferensi);}
+        else if (preferensi.equals("Fav")){
+//            favUpdate();
+        }
         else{
-            FirebaseController.getBeritaFromEmaiil(FirebaseController.getCurrentUserEmail());}
-        dataChange();
+//            Model.beritaArrayList =
+                    FirebaseController.getBeritaFromEmaiil(FirebaseController.getCurrentUserEmail());
+        }
         beritaAdapter = new BeritaAdapter(this, Model.beritaArrayList);
-        System.out.println(Model.beritaArrayList.size()+"--------");
         rvBerita.setLayoutManager(new LinearLayoutManager(this));
         rvBerita.setAdapter(beritaAdapter);
+        if(getRvAdaper()!=null){
+            refreshList();}
     }
+
+    public static void favUpdate() {
+        if(TampilBerita.beritaAdapter!=null && TampilBerita.rvBerita!=null){
+            Model.beritaArrayList.clear();
+            ArrayList<String> temp = new ArrayList<>();
+            for (Fav fav:new ArrayList<>(new HashSet<>(Model.allFav))){
+                if (temp.contains(fav.toString())){continue;}
+                if (fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
+                    for (Berita berita: Model.beritaPublicArrayList){
+                        if (fav.getKeyBerita().equals(berita.getKey())){
+                            Model.beritaArrayList.add(berita);
+                            temp.add(fav.toString());}}
+                }
+            }
+            TampilBerita.beritaAdapter.setList(Model.beritaArrayList);
+            TampilBerita.rvBerita.setAdapter(TampilBerita.beritaAdapter);
+            TampilBerita.dataChange();}
+    }
+
     public static void dataChange() {
         if (Model.beritaArrayList.size() > 0){
             message.setVisibility(View.INVISIBLE);
@@ -100,7 +140,64 @@ public class TampilBerita extends AppCompatActivity {
         return beritaAdapter;
     }
     public static void refreshList(){
+        if (beritaAdapter!=null){
         getRvAdaper().notifyDataSetChanged();
-        dataChange();
+        dataChange();}
     }
+
+    public void getFavId(String email){
+        CariBerita.favDao.getFavEmail(email).observe(this, favs -> {
+            Model.allFav.clear();
+            Model.allFav = new ArrayList<>(favs);
+        });
+
+    }
+    public static void getFavEmail(){
+            Model.beritaArrayList.clear();
+            ArrayList<String> temp = new ArrayList<>();
+            if(Model.allFav!=null){
+            for (Fav fav:Model.allFav){
+                if (temp.contains(fav.toString())){continue;}
+                for(Berita berita : Model.beritaPublicArrayList){
+                    if(berita.getKey().equals(fav.getKeyBerita())){
+                    Model.beritaArrayList.add(berita);
+                    temp.add(fav.toString());}
+            }}
+            }
+            if(beritaAdapter!=null){
+                TampilBerita.beritaAdapter.setList(Model.beritaArrayList);
+                TampilBerita.rvBerita.setAdapter(TampilBerita.beritaAdapter);
+                TampilBerita.dataChange();}
+
+    }
+    public void isFav(String email, String keyBerita){
+        CariBerita.favDao.isFav(email,keyBerita).observe(
+                this, aBoolean -> {
+                    Model.isFav = aBoolean;
+                });
+    }
+    public void getId(String email, String keyBerita){
+        CariBerita.favDao.getFavId(email,keyBerita).observe(
+                this, integer -> {
+                    Model.idBerita = integer;
+                });
+    }
+
+    //function insert data ke room
+    public void insertData(Fav fav){
+        executorService.execute(()->CariBerita.favDao.insert(fav));
+        CariBerita.favDao.getLast().observe(this,favs -> {
+            Model.idBerita = favs.get(0).getId();
+        });
+    }
+
+
+    //function delete
+    public void deleteData(Fav fav){
+        executorService.execute(()->CariBerita.favDao.delete(fav));
+    }
+
+
+
+
 }

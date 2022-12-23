@@ -1,9 +1,11 @@
 package com.example.jawabanuasrevandra;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.example.jawabanuasrevandra.Notifikasi.Notif;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,31 +22,70 @@ public class FirebaseController extends Application {
     public static FirebaseAuth firebaseAuth;
     public static DatabaseReference userReference;
     public static DatabaseReference beritaReference;
+    public static DatabaseReference notifReference;
     public static String currentUsername;
+    public static int currentUmur;
+    public static SharedPreferences sharedPreferences2;
+    private final String sharedPrefFile = "com.example.jawabanuasrevandra";
+
+
+
 
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sharedPreferences2 = getSharedPreferences(sharedPrefFile,MODE_PRIVATE);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         userReference = firebaseDatabase.getReference("User");
         beritaReference = firebaseDatabase.getReference("Berita");
+        notifReference = firebaseDatabase.getReference("Notification");
         beritaReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()){
+                    String preferensi = sharedPreferences2.getString(CariBerita.GENRE_KEY,"");
+                    Model.beritaArrayList.clear();
                     for (DataSnapshot currentData : snapshot.getChildren()){
-//                        Berita berita = new Berita();
-//                        berita.setKey(currentData.getKey());
-//                        berita.setCategory(currentData.child("category").getValue().toString());
-//                        berita.setUmur(Integer.parseInt(currentData.child("umur").getValue().toString()));
-//                        berita.setJudul(currentData.child("judul").getValue().toString());
-//                        berita.setContent(currentData.child("content").getValue().toString());
-//                        berita.setEmail(currentData.child("email").getValue().toString());
                         Berita berita = currentData.getValue(Berita.class);
-                        Model.beritaArrayList.add(berita);
+                        berita.setKey(currentData.getKey());
+                        Model.beritaPublicArrayList.add(berita);
+                        if(preferensi.equals("Edit") && firebaseAuth.getCurrentUser()!=null){
+//                        Model.beritaPublicArrayList.add(berita);
+                            String email = getCurrentUserEmail();
+                            if(currentData.child("email").getValue().equals(email)){
+                            Model.beritaArrayList.add(berita);}}
+                        else {
+                            if(currentData.child("category").equals(preferensi) && berita.getUmur() <= FirebaseController.currentUmur){
+                                Model.beritaArrayList.add(berita);
+                            }
+                        }
+                    }if(TampilBerita.getRvAdaper()!=null){
+                        TampilBerita.beritaAdapter.setList(new ArrayList<>(Model.beritaArrayList));
+                        TampilBerita.rvBerita.setAdapter(TampilBerita.beritaAdapter);
+                        TampilBerita.dataChange();
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        notifReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChildren()){
+                    Model.allNotif.clear();
+                    for (DataSnapshot currentData : snapshot.getChildren()){
+                        if (firebaseAuth.getCurrentUser()!=null){
+                        if (currentData.child("name").equals(FirebaseController.getCurrentUserEmail())) {
+                            Notif notif = currentData.getValue(Notif.class);
+                            notif.setKey(currentData.getKey());
+                            Model.allNotif.add(notif);
+                        }}}
                 }
             }
 
@@ -55,33 +96,61 @@ public class FirebaseController extends Application {
         });
 
     }
-    public static ArrayList<Berita> getBeritaFromGenre(String genre){
-        ArrayList<Berita> resultList = new ArrayList<>();
-        userReference.orderByChild("genre").equalTo(genre).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+    public static void getBeritaFromGenre(String genre){
+//        ArrayList<Berita> resultList = new ArrayList<>();
+        Model.beritaArrayList.clear();
+        beritaReference.orderByChild("category").equalTo(genre).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot currentData : dataSnapshot.getChildren()){
                         Berita berita = currentData.getValue(Berita.class);
-                        resultList.add(berita);
+                        berita.setKey(currentData.getKey());
+                        Model.beritaArrayList.add(berita);
                     }
+                    if(TampilBerita.getRvAdaper()!=null){
+                        TampilBerita.refreshList();}
                 }
             }
         });
-        return resultList;
+//        return resultList;
     }
+//    public static void getBeritaFromEmaiil(String email){
+////        ArrayList<Berita> resultList = new ArrayList<>();
+//        beritaReference.orderByChild("email").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+//            @Override
+//            public void onSuccess(DataSnapshot dataSnapshot) {
+//                System.out.println("YEss");
+//                if (dataSnapshot.hasChildren()){
+//                    for (DataSnapshot currentData : dataSnapshot.getChildren()){
+//                        Berita berita = currentData.getValue(Berita.class);
+//                        System.out.println(berita.getJudul());
+//                        Model.beritaArrayList.add(berita);
+//                    }
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                System.out.println(e);
+//            }
+//        });
+//
+//    }
     public static void getBeritaFromEmaiil(String email){
-//        ArrayList<Berita> resultList = new ArrayList<>();
-        beritaReference.orderByChild("email").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+//            ArrayList<Berita> resultList = new ArrayList<>();
+            Model.beritaArrayList.clear();
+            beritaReference.orderByChild("email").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                System.out.println("YEss");
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot currentData : dataSnapshot.getChildren()){
                         Berita berita = currentData.getValue(Berita.class);
-                        System.out.println(berita.getJudul());
+                        berita.setKey(currentData.getKey());
                         Model.beritaArrayList.add(berita);
                     }
+                    if(TampilBerita.getRvAdaper()!=null){
+                        TampilBerita.refreshList();}
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -90,8 +159,33 @@ public class FirebaseController extends Application {
                 System.out.println(e);
             }
         });
-
+//        return resultList;
     }
+
+    public static void getBerita(String key){
+        beritaReference.child(key).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()){
+                    Berita berita = dataSnapshot.getValue(Berita.class);
+                    berita.setKey(key);
+                    Model.tempBerita = berita;
+//                    for (DataSnapshot currentData : dataSnapshot.getChildren()){
+//                        System.out.println(currentData.getKey());
+//                        Berita berita = currentData.getValue(Berita.class);
+//                        berita.setKey(currentData.getKey());
+//                        resultList.add(berita);
+//                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
+    }
+
     public static String getCurrentUserEmail(){
         return FirebaseController.firebaseAuth.getCurrentUser().getEmail();
     }
@@ -101,5 +195,48 @@ public class FirebaseController extends Application {
     public static void insertData(Berita berita){
         beritaReference.push().setValue(berita);
         TampilBerita.getRvAdaper().notifyDataSetChanged();
+    }
+    public static void deleteData(Berita berita){
+        beritaReference.child(berita.getKey()).removeValue();
+        TampilBerita.getRvAdaper().notifyDataSetChanged();
+    }
+    public static void updatedata(Berita berita) {
+        beritaReference.child(berita.getKey()).setValue(Berita.convertData(berita));
+        TampilBerita.getRvAdaper().notifyDataSetChanged();
+    }
+    public static void getAllNotif(String email){
+        System.out.println(email);
+        notifReference.orderByChild("name").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                Model.allNotif.clear();
+                CariBerita activity = new CariBerita();
+                if (dataSnapshot.hasChildren()){
+                    for (DataSnapshot currentData:dataSnapshot.getChildren()){
+                        Notif notif = currentData.getValue(Notif.class);
+                        notif.setKey(currentData.getKey());
+                        Model.allNotif.add(notif);
+                        System.out.println("Berhasilxxxx");
+//                        activity.getAllNotification();
+                    }
+                    CariBerita.avail = true;
+                }
+                else {
+                    CariBerita.gagal = true;
+                    System.out.println("Gagal_1-1-1-");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
+    }
+    public static void insertData(Notif notif){
+        notifReference.push().setValue(notif);
+    }
+    public static void deleteData(Notif notif){
+        notifReference.child(notif.getKey()).removeValue();
     }
 }

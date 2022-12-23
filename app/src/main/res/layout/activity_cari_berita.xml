@@ -18,21 +18,12 @@
         tools:layout_editor_absoluteX="30dp"
         tools:layout_editor_absoluteY="30dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="10dp"
-            android:text="Cari Berita"
-            android:textAlignment="center"
-            android:textColor="@color/purple_500"
-            android:textSize="50sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="100dp"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/bg_layar"
             android:orientation="vertical"
@@ -155,9 +146,23 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="40dp"
+        app:maxImageSize="38dp"
         app:tint="@color/black"
         android:layout_marginBottom="50dp"
         android:layout_marginRight="75dp"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/white"
+        android:src="@drawable/ic_baseline_favorite_24"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="40dp"
+        app:tint="@android:color/holo_red_dark"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="75dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

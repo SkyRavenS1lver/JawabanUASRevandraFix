@@ -58,14 +58,15 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.hasChildren()){
-                                    for (DataSnapshot currentData : dataSnapshot.getChildren()){
-                                        String email = currentData.getValue().toString();
+                                        String email = dataSnapshot.child("email").getValue().toString();
+                                        int umur = Integer.parseInt(dataSnapshot.child("umur").getValue().toString());
                                         FirebaseController.firebaseAuth.signInWithEmailAndPassword(email,passwordUser).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                             @Override
                                             public void onSuccess(AuthResult authResult) {
                                                 if (!available){
                                                 Toast.makeText(LoginActivity.this,"Login Success!", Toast.LENGTH_LONG).show();
                                                 FirebaseController.currentUsername = usernameUser;
+                                                FirebaseController.currentUmur = umur;
                                                 startActivity(new Intent(LoginActivity.this, CariBerita.class));
                                                 available = true;
                                             }
@@ -76,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 available = true;
                                             }
                                         });
-                                        break;
-                                    }
+
                                 }
                                 else {username.setError("Username Tidak Terdaftar!");}
                             }

@@ -20,22 +20,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="25dp"
             android:gravity="center"
             android:text="Mode Saat Ini"
             android:textSize="35sp"
             android:textStyle="bold" />
     <ScrollView
-        android:layout_marginTop="100dp"
         android:layout_marginHorizontal="25dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Judul">
+        android:layout_marginBottom="20dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,13 +42,14 @@
                 android:layout_height="wrap_content"
                 >
                 <TextView
+                    android:id="@+id/TVJudul"
                     style="@style/editText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Judul: "
                     android:textSize="25sp"/>
                 <EditText
-                    android:gravity="center"
+                    android:gravity="start"
                     android:id="@+id/judulBerita"
                     style="@style/editText"
                     android:layout_width="match_parent"
@@ -60,14 +57,39 @@
                     android:hint="Judul" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/Penulis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_weight="1"
+                    style="@style/editText"
+                    android:id="@+id/writerBerita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:hint="Penulis" />
+                <TextView
+                    android:layout_marginRight="25dp"
+
+                    android:layout_weight="1.5"
+                    android:id="@+id/rilisBerita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Rilis"
+                    android:gravity="end"
+                    style="@style/editText"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/TVGenre"
                     style="@style/editText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Genre: "
-
                     android:textSize="25sp"/>
                 <Spinner
                     android:id="@+id/Status"
@@ -80,63 +102,30 @@
                     android:popupBackground="@drawable/bg_popup"
                     android:spinnerMode="dropdown"
                     android:textColor="@color/purple_500" />
-
             </LinearLayout>
+
+
             <LinearLayout
+                android:id="@+id/LayoutUmur"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
                 <TextView
+                    android:id="@+id/TVTarget"
                     style="@style/editText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Umur minimum: "
+                    android:layout_weight="2"
+                    android:text="Target Umur: "
                     android:textSize="25sp"/>
                 <EditText
-                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="start"
                     android:id="@+id/umurMin"
                     style="@style/editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Umur Minimal" />
-            </LinearLayout>
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/Penulis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    style="@style/editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Penulis: "
-                    android:textSize="25sp"/>
-                <EditText
-                    style="@style/editText"
-                    android:id="@+id/writerBerita"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:hint="Penulis" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/Rilis"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    style="@style/editText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rilis: "
-                    android:textSize="25sp"/>
-                <EditText
-                    android:id="@+id/rilisBerita"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Rilis"
-                    android:gravity="center"
-                    style="@style/editText"/>
+                    android:hint="Target" />
             </LinearLayout>
             <EditText
                 android:id="@+id/contentBerita"
@@ -145,8 +134,11 @@
                 android:layout_height="wrap_content"
                 android:hint="Content Berita"
                 android:justificationMode="inter_word"
+                android:layout_marginHorizontal="10dp"
+                android:paddingBottom="50dp"
                 style="@style/editText" />
         </LinearLayout>
+
     </ScrollView>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

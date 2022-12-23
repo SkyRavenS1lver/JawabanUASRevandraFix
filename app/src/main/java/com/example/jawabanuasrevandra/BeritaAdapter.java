@@ -1,28 +1,40 @@
 package com.example.jawabanuasrevandra;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.jawabanuasrevandra.Favorite.Fav;
+import com.example.jawabanuasrevandra.Notifikasi.Notif;
+
 import java.util.ArrayList;
 
 public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder> {
-    private final ArrayList<Berita> value;
+    private ArrayList<Berita> value;
     private LayoutInflater inflater;
+    Fav favs = new Fav();
+
 
     public BeritaAdapter(Context context, ArrayList<Berita> listBerita) {
         this.value = listBerita;
         this.inflater = LayoutInflater.from(context);
 
+    }
+    public void setList(ArrayList<Berita> listBaru){
+        this.value = listBaru;
     }
 
 
@@ -48,6 +60,53 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
         Drawable bgEdit = ContextCompat.getDrawable(inflater.getContext(), R.drawable.bgev_edit);
         if (preferensi.equals("Edit")){
             holder.itemView.setBackground(bgEdit);
+            holder.like.setVisibility(View.GONE);
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext());
+                    alert.setTitle("Perhatian!");
+                    alert.setMessage("Apakah anda ingin Menghapus Data Tersebut?");
+                    alert.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseController.deleteData(berita);
+                            Toast.makeText(holder.itemView.getContext(), "Data Berhasil Di Hapus", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    alert.show();
+                }
+            });
+        }
+        if (preferensi.equals("Edit")){
+            holder.itemView.setBackground(bgEdit);
+            holder.like.setVisibility(View.GONE);
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext());
+                    alert.setTitle("Perhatian!");
+                    alert.setMessage("Apakah anda ingin Menghapus Data Tersebut?");
+                    alert.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseController.deleteData(berita);
+                            Toast.makeText(holder.itemView.getContext(), "Data Berhasil Di Hapus", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    alert.show();
+                }
+            });
         }
         else if (berita.getCategory().equals("Pariwisata")){
             holder.itemView.setBackground(bg);
@@ -60,18 +119,87 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
         }else if (berita.getCategory().equals("Entertainment")){
             holder.itemView.setBackground(bg4);
         }
-//        holder.itemView.setOnClickListener(view -> {
-//            Intent intent = new Intent(holder.itemView.getContext(), DetailBerita.class);
-//            String judul = berita.judul;
-//            String tanggal = berita.rilis;
-//            int noGambar = berita.picture;
-//            String desc = berita.content;
-//            intent.putExtra("judul", judul);
-//            intent.putExtra("tanggal", tanggal);
-//            intent.putExtra("noGambar", noGambar);
-//            intent.putExtra("desc", desc);
-//            view.getContext().startActivity(intent);
+        if (!preferensi.equals("Edit")){
+            holder.itemView.setBackground(bgEdit);
+            holder.delete.setVisibility(View.GONE);
+            TampilBerita activity = new TampilBerita();
+            CariBerita activity2 = new CariBerita();
+            for(Fav fav:Model.allFav){
+                if(fav.getKeyBerita().equals(berita.getKey()) && fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
+                    holder.like.setChecked(true);
+                    break;
+                }
+            }
+            holder.like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(holder.like.isChecked()){
+                        Fav favBaru = new Fav(berita.getKey(),FirebaseController.getCurrentUserEmail());
+                        activity.insertData(favBaru);
+//                        favBaru.setId(Model.idBerita);
+                        if(!berita.getEmail().equals(FirebaseController.getCurrentUserEmail())){
+                        FirebaseController.insertData(new Notif("Berita "+berita.getJudul() +" Anda Disukai Oleh "+FirebaseController.getCurrentUserFullName()
+                                ,berita.getEmail()));}
+//                        Model.allFav.add(favBaru);
+                        if(TampilBerita.getRvAdaper()!=null && preferensi.equals("Fav")){
+                            TampilBerita.favUpdate();}
+                        System.out.println(Model.allFav.size());}
+                    else {
+                        holder.like.setChecked(false);
+                        for (Fav fav:Model.allFav){
+                            if (fav.getKeyBerita().equals(berita.getKey())&&fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
+                                activity.deleteData(fav);
+                                Model.allFav.remove(fav);
+                                if (preferensi.equals("Fav")){
+                                holder.itemView.setVisibility(View.GONE);}
+                                TampilBerita.favUpdate();
+                                break;
+                            }
+//                            for (NotifApk notifApk:Model.allNotif){
+//                                if (notifApk.getMessage().equals(berita.getKey())&&fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
+//                                    activity.deleteData(fav);
+//                                    holder.itemView.setVisibility(View.GONE);
+//                                    TampilBerita.getRvAdaper().notifyDataSetChanged();
+//                                    break;
+//                                }
+//                            }
+                        }if(TampilBerita.getRvAdaper()!=null &&preferensi.equals("Fav")){
+                            holder.like.setVisibility(View.GONE);
+                            TampilBerita.favUpdate();}}
+                }
+            });
+        }
+//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                if(preferensi.equals("Edit")) {
+//                    AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext());
+//                    alert.setTitle("Perhatian!");
+//                    alert.setMessage("Apakah anda ingin Menghapus Data Tersebut?");
+//                    alert.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            FirebaseController.deleteData(berita);
+//                            Toast.makeText(holder.itemView.getContext(), "Data Berhasil Di Hapus", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//                    alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                        }
+//                    });
+//                    alert.show();
+//                }
+//                return false;
+//            }
 //        });
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(holder.itemView.getContext(), ManageBerita.class);
+            Model.currentBerita = berita;
+            intent.putExtra("judul", "Detail Data");
+            intent.putExtra("mode", "edit");
+            view.getContext().startActivity(intent);
+        });
 
     }
 
@@ -82,13 +210,18 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName,txtTanggal,txtWriter;
+        CheckBox like;
+        ImageView delete;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            like = itemView.findViewById(R.id.checkBox);
+            delete = itemView.findViewById(R.id.imageView);
             txtName = itemView.findViewById(R.id.txt_name);
             txtTanggal = itemView.findViewById(R.id.txt_tanggal);
             txtWriter = itemView.findViewById(R.id.txt_writer);
         }
     }
+
 }
