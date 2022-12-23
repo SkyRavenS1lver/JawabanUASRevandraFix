@@ -26,7 +26,6 @@ public class TampilBerita extends AppCompatActivity {
     public static ExecutorService executorService;
     public static RecyclerView rvBerita;
     FloatingActionButton addData;
-    public static ArrayList<Berita> listBerita = new ArrayList<>();
     public static BeritaAdapter beritaAdapter;
     Drawable bgBaru;
     TextView judul;
@@ -169,18 +168,7 @@ public class TampilBerita extends AppCompatActivity {
                 TampilBerita.dataChange();}
 
     }
-    public void isFav(String email, String keyBerita){
-        CariBerita.favDao.isFav(email,keyBerita).observe(
-                this, aBoolean -> {
-                    Model.isFav = aBoolean;
-                });
-    }
-    public void getId(String email, String keyBerita){
-        CariBerita.favDao.getFavId(email,keyBerita).observe(
-                this, integer -> {
-                    Model.idBerita = integer;
-                });
-    }
+
 
     //function insert data ke room
     public void insertData(Fav fav){

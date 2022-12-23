@@ -176,8 +176,7 @@ public class CariBerita extends AppCompatActivity {
     }
     private void sendNotification(Notif notifApk){
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder(notifApk);
-
-        notificationManager.notify(Model.allNotif.size(), notifyBuilder.build());
+        notificationManager.notify(penanda, notifyBuilder.build());
         FirebaseController.deleteData(notifApk);
         penanda--;
     }
