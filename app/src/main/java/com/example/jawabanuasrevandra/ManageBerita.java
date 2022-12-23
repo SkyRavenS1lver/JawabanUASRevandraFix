@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,19 @@ public class ManageBerita extends AppCompatActivity {
             confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    boolean error = false;
+                    if (TextUtils.isEmpty(judulBerita.getText())){
+                        judulBerita.setError("Judul Tidak Boleh Kosong!");
+                        error = true;
+                    }
+                    if (TextUtils.isEmpty(contentBerita.getText())){
+                        contentBerita.setError("Konten Harus Diisi!");
+                        error = true;
+                    }
+                    if (TextUtils.isEmpty(umur.getText())){
+                        umur.setText("0");
+                    }
+                    if (!error){
                     Date c = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy HH.mm", Locale.getDefault());
                     String formattedDate = df.format(c);
@@ -77,7 +91,7 @@ public class ManageBerita extends AppCompatActivity {
                             );
                     FirebaseController.insertData(berita);
                     startActivity(intent);
-                }
+                }}
             });
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,6 +136,19 @@ public class ManageBerita extends AppCompatActivity {
                     confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            boolean error = false;
+                            if (TextUtils.isEmpty(judulBerita.getText())){
+                                judulBerita.setError("Judul Tidak Boleh Kosong!");
+                                error = true;
+                            }
+                            if (TextUtils.isEmpty(contentBerita.getText())){
+                                contentBerita.setError("Konten Harus Diisi!");
+                                error = true;
+                            }
+                            if (TextUtils.isEmpty(umur.getText())){
+                                umur.setText("0");
+                            }
+                            if (!error){
                             Berita berita = new Berita(
                                     judulBerita.getText().toString(),
                                     currentBerita.getRilis(),
@@ -135,7 +162,7 @@ public class ManageBerita extends AppCompatActivity {
                             FirebaseController.updatedata(berita);
                             judul.setText(judulPage);
                             changeState(false);
-                        }
+                        }}
                     });
                     int urutan = Model.genres.indexOf(currentBerita.getCategory());
                     cancel.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +184,19 @@ public class ManageBerita extends AppCompatActivity {
                     Date c = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy HH.mm", Locale.getDefault());
                     String formattedDate = df.format(c);
+                    boolean error = false;
+                    if (TextUtils.isEmpty(judulBerita.getText())){
+                        judulBerita.setError("Judul Tidak Boleh Kosong!");
+                        error = true;
+                    }
+                    if (TextUtils.isEmpty(contentBerita.getText())){
+                        contentBerita.setError("Konten Harus Diisi!");
+                        error = true;
+                    }
+                    if (TextUtils.isEmpty(umur.getText())){
+                        umur.setText("0");
+                    }
+                    if (!error){
                     Berita berita = new Berita(
                             judulBerita.getText().toString(),
                             formattedDate,
@@ -168,7 +208,7 @@ public class ManageBerita extends AppCompatActivity {
                     );
                     FirebaseController.insertData(berita);
                     startActivity(intent);
-                }
+                }}
             });
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,8 +238,10 @@ public class ManageBerita extends AppCompatActivity {
             cancel.setVisibility(View.VISIBLE);
             layoutUmur.setVisibility(View.VISIBLE);
             spinnerText.setVisibility(View.VISIBLE);
+            kumpul.setVisibility(View.GONE);
         }
         else{
+            kumpul.setVisibility(View.VISIBLE);
             layoutUmur.setVisibility(View.GONE);
             spinnerText.setVisibility(View.GONE);
             edit.setVisibility(View.VISIBLE);
