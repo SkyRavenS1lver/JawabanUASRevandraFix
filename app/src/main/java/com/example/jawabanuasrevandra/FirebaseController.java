@@ -47,6 +47,7 @@ public class FirebaseController extends Application {
                 String preferensi = sharedPreferences2.getString(CariBerita.GENRE_KEY,"");
                 if (snapshot.hasChildren() && !preferensi.equals("Fav")){
                     Model.beritaArrayList.clear();
+                    Model.beritaPublicArrayList.clear();
                     for (DataSnapshot currentData : snapshot.getChildren()){
                         Berita berita = currentData.getValue(Berita.class);
                         berita.setKey(currentData.getKey());
@@ -161,7 +162,7 @@ public class FirebaseController extends Application {
     }
     public static void insertData(Berita berita){
         beritaReference.push().setValue(berita);
-        TampilBerita.getRvAdaper().notifyDataSetChanged();
+//        TampilBerita.getRvAdaper().notifyDataSetChanged();
     }
     public static void deleteData(Berita berita){
         beritaReference.child(berita.getKey()).removeValue();
