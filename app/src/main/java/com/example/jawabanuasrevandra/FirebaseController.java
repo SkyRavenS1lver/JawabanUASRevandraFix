@@ -44,8 +44,8 @@ public class FirebaseController extends Application {
         beritaReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChildren()){
-                    String preferensi = sharedPreferences2.getString(CariBerita.GENRE_KEY,"");
+                String preferensi = sharedPreferences2.getString(CariBerita.GENRE_KEY,"");
+                if (snapshot.hasChildren() && !preferensi.equals("Fav")){
                     Model.beritaArrayList.clear();
                     for (DataSnapshot currentData : snapshot.getChildren()){
                         Berita berita = currentData.getValue(Berita.class);
