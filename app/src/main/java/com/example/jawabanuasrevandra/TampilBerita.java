@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -69,7 +71,7 @@ public class TampilBerita extends AppCompatActivity {
         }
         else if(preferensi.equals("Fav")){
             message.setText("Belum ada berita yang disukai");
-            judul.setText("Berita Yang Anda Sukai");
+            judul.setText("Berita Yang\nAnda Sukai");
             bgBaru = ContextCompat.getDrawable(bg.getContext(), R.drawable.bgphoto);
             judul.setTextColor(getResources().getColor(R.color.text));
             message.setTextColor(getResources().getColor(R.color.text));
@@ -96,6 +98,8 @@ public class TampilBerita extends AppCompatActivity {
         bg.setBackground(bgBaru);
 //        listBerita =
         if (!preferensi.equals("Edit") && !preferensi.equals("Fav")){
+            getFavId(FirebaseController.getCurrentUserEmail());
+            getFavEmail();
 //        Model.beritaArrayList =
                 FirebaseController.getBeritaFromGenre(preferensi);}
         else if (preferensi.equals("Fav")){
@@ -199,5 +203,8 @@ public class TampilBerita extends AppCompatActivity {
 
 
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(TampilBerita.this, CariBerita.class));
+    }
 }

@@ -120,7 +120,7 @@ public class CariBerita extends AppCompatActivity {
                         Toast.makeText(CariBerita.this, "Berhasil Logout", Toast.LENGTH_SHORT).show();
                         Model.beritaArrayList.clear();
                         Model.allFav.clear();
-                        finish();
+                        startActivity(new Intent(CariBerita.this, LoginActivity.class));
                     }
                 });
                 alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -263,4 +263,23 @@ public class CariBerita extends AppCompatActivity {
 //        super.onDestroy();
 //        unregisterReceiver(receiverRegister);
 //    }
+    @Override
+    public void onBackPressed() {
+            AlertDialog.Builder alert = new AlertDialog.Builder(CariBerita.this);
+            alert.setTitle("Perhatian!");
+            alert.setMessage("Apakah anda ingin keluar dari aplikasi?");
+            alert.setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finishAffinity();
+                    finish();
+                }
+            });
+            alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            alert.show();
+    }
 }

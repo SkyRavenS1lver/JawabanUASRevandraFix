@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -186,5 +188,23 @@ public class RegisterActivity extends AppCompatActivity {
                 day > currentDate.get(Calendar.DAY_OF_MONTH)))
         {umur--;}
         dateOfBirth.setText(dateMessage);
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(RegisterActivity.this);
+        alert.setTitle("Perhatian!");
+        alert.setMessage("Apakah anda ingin kembali ke halaman login?");
+        alert.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
+        alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        alert.show();
     }
 }

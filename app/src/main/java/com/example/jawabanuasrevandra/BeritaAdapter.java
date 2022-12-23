@@ -123,7 +123,6 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
             holder.itemView.setBackground(bgEdit);
             holder.delete.setVisibility(View.GONE);
             TampilBerita activity = new TampilBerita();
-            CariBerita activity2 = new CariBerita();
             for(Fav fav:Model.allFav){
                 if(fav.getKeyBerita().equals(berita.getKey()) && fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
                     holder.like.setChecked(true);
@@ -145,14 +144,15 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
                             TampilBerita.favUpdate();}
                         System.out.println(Model.allFav.size());}
                     else {
-                        holder.like.setChecked(false);
                         for (Fav fav:Model.allFav){
                             if (fav.getKeyBerita().equals(berita.getKey())&&fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
                                 activity.deleteData(fav);
                                 Model.allFav.remove(fav);
                                 if (preferensi.equals("Fav")){
-                                holder.itemView.setVisibility(View.GONE);}
-                                TampilBerita.favUpdate();
+                                holder.itemView.setVisibility(View.GONE);
+                                }
+
+//                                TampilBerita.favUpdate();
                                 break;
                             }
 //                            for (NotifApk notifApk:Model.allNotif){

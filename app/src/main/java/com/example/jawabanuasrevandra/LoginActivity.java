@@ -3,6 +3,8 @@ package com.example.jawabanuasrevandra;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -124,5 +126,24 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, CariBerita.class);
             startActivity(intent);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+        alert.setTitle("Perhatian!");
+        alert.setMessage("Apakah anda ingin keluar dari aplikasi?");
+        alert.setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finishAffinity();
+                finish();
+            }
+        });
+        alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        alert.show();
     }
 }
