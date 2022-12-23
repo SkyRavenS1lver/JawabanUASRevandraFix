@@ -172,7 +172,6 @@ public class FirebaseController extends Application {
         TampilBerita.getRvAdaper().notifyDataSetChanged();
     }
     public static void getAllNotif(String email){
-        System.out.println(email);
         notifReference.orderByChild("name").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -183,13 +182,11 @@ public class FirebaseController extends Application {
                         Notif notif = currentData.getValue(Notif.class);
                         notif.setKey(currentData.getKey());
                         Model.allNotif.add(notif);
-                        System.out.println("Berhasilxxxx");
                     }
                     CariBerita.avail = true;
                 }
                 else {
                     CariBerita.gagal = true;
-                    System.out.println("Gagal_1-1-1-");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

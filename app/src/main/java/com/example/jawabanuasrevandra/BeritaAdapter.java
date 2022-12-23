@@ -140,7 +140,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
                                 ,berita.getEmail()));}
                         if(TampilBerita.getRvAdaper()!=null && preferensi.equals("Fav")){
                             TampilBerita.favUpdate();}
-                        System.out.println(Model.allFav.size());}
+                    }
                     else {
                         for (Fav fav:Model.allFav){
                             if (fav.getKeyBerita().equals(berita.getKey())&&fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){

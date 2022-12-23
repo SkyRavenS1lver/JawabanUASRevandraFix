@@ -67,7 +67,6 @@ public class CariBerita extends AppCompatActivity {
                 while (true) {
                     if (gagal){gagal = false;break;}
                     if (Model.allNotif.size() > 0) {
-                        System.out.println("Jalan====");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

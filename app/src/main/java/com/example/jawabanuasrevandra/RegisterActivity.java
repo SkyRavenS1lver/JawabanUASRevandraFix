@@ -120,7 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
                             if(dataSnapshot.hasChildren()){
-                                System.out.println("HOLAA!!");
                                 email.setError("Email sudah terdaftar!");
                                 valid = false;
                             }response = true;}
@@ -128,7 +127,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     System.out.println(e.toString());
-                                    Toast.makeText(RegisterActivity.this,"Tidak dapat terhubung dengan internet", Toast.LENGTH_LONG).show();
                                     valid = false;
                                     response = true;
                                 }
@@ -137,9 +135,6 @@ public class RegisterActivity extends AppCompatActivity {
                         FirebaseController.firebaseAuth.createUserWithEmailAndPassword(emailUser,passwordUser).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                System.out.println(available);
-                                System.out.println(response);
-                                System.out.println(valid);
                                 if (!available && response && valid){
                                     FirebaseController.userReference.child(usernameUser).child("email").setValue(emailUser);
                                     FirebaseController.userReference.child(usernameUser).child("umur").setValue(String.valueOf(umur));
