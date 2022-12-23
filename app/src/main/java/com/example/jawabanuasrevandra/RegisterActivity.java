@@ -74,6 +74,10 @@ public class RegisterActivity extends AppCompatActivity {
                     password.setError("Password Tidak Boleh Kosong!");
                     error = true;
                 }
+                else if (password.getText().toString().length()<6){
+                    password.setError("Password harus minimal 6 karakter!");
+                    error = true;
+                }
                 if (TextUtils.isEmpty(email.getText())){
                     email.setError("Email Tidak Boleh Kosong!");
                     error = true;
