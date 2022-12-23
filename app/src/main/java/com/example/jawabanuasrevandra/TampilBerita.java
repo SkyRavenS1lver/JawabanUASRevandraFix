@@ -96,17 +96,12 @@ public class TampilBerita extends AppCompatActivity {
             });
         }
         bg.setBackground(bgBaru);
-//        listBerita =
         if (!preferensi.equals("Edit") && !preferensi.equals("Fav")){
             getFavId(FirebaseController.getCurrentUserEmail());
             getFavEmail();
-//        Model.beritaArrayList =
                 FirebaseController.getBeritaFromGenre(preferensi);}
-        else if (preferensi.equals("Fav")){
-//            favUpdate();
-        }
+        else if (preferensi.equals("Fav")){}
         else{
-//            Model.beritaArrayList =
                     FirebaseController.getBeritaFromEmaiil(FirebaseController.getCurrentUserEmail());
         }
         beritaAdapter = new BeritaAdapter(this, Model.beritaArrayList);

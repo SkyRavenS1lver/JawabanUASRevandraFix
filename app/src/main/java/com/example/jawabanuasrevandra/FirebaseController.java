@@ -52,7 +52,6 @@ public class FirebaseController extends Application {
                         berita.setKey(currentData.getKey());
                         Model.beritaPublicArrayList.add(berita);
                         if(preferensi.equals("Edit") && firebaseAuth.getCurrentUser()!=null){
-//                        Model.beritaPublicArrayList.add(berita);
                             String email = getCurrentUserEmail();
                             if(currentData.child("email").getValue().equals(email)){
                             Model.beritaArrayList.add(berita);}}
@@ -97,7 +96,6 @@ public class FirebaseController extends Application {
 
     }
     public static void getBeritaFromGenre(String genre){
-//        ArrayList<Berita> resultList = new ArrayList<>();
         Model.beritaArrayList.clear();
         beritaReference.orderByChild("category").equalTo(genre).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
@@ -113,32 +111,8 @@ public class FirebaseController extends Application {
                 }
             }
         });
-//        return resultList;
     }
-//    public static void getBeritaFromEmaiil(String email){
-////        ArrayList<Berita> resultList = new ArrayList<>();
-//        beritaReference.orderByChild("email").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-//            @Override
-//            public void onSuccess(DataSnapshot dataSnapshot) {
-//                System.out.println("YEss");
-//                if (dataSnapshot.hasChildren()){
-//                    for (DataSnapshot currentData : dataSnapshot.getChildren()){
-//                        Berita berita = currentData.getValue(Berita.class);
-//                        System.out.println(berita.getJudul());
-//                        Model.beritaArrayList.add(berita);
-//                    }
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                System.out.println(e);
-//            }
-//        });
-//
-//    }
     public static void getBeritaFromEmaiil(String email){
-//            ArrayList<Berita> resultList = new ArrayList<>();
             Model.beritaArrayList.clear();
             beritaReference.orderByChild("email").equalTo(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
@@ -159,7 +133,6 @@ public class FirebaseController extends Application {
                 System.out.println(e);
             }
         });
-//        return resultList;
     }
 
     public static void getBerita(String key){
@@ -170,12 +143,6 @@ public class FirebaseController extends Application {
                     Berita berita = dataSnapshot.getValue(Berita.class);
                     berita.setKey(key);
                     Model.tempBerita = berita;
-//                    for (DataSnapshot currentData : dataSnapshot.getChildren()){
-//                        System.out.println(currentData.getKey());
-//                        Berita berita = currentData.getValue(Berita.class);
-//                        berita.setKey(currentData.getKey());
-//                        resultList.add(berita);
-//                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -217,7 +184,6 @@ public class FirebaseController extends Application {
                         notif.setKey(currentData.getKey());
                         Model.allNotif.add(notif);
                         System.out.println("Berhasilxxxx");
-//                        activity.getAllNotification();
                     }
                     CariBerita.avail = true;
                 }

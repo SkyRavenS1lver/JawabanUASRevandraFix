@@ -135,11 +135,9 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
                     if(holder.like.isChecked()){
                         Fav favBaru = new Fav(berita.getKey(),FirebaseController.getCurrentUserEmail());
                         activity.insertData(favBaru);
-//                        favBaru.setId(Model.idBerita);
                         if(!berita.getEmail().equals(FirebaseController.getCurrentUserEmail())){
                         FirebaseController.insertData(new Notif("Berita "+berita.getJudul() +" Anda Disukai Oleh "+FirebaseController.getCurrentUserFullName()
                                 ,berita.getEmail()));}
-//                        Model.allFav.add(favBaru);
                         if(TampilBerita.getRvAdaper()!=null && preferensi.equals("Fav")){
                             TampilBerita.favUpdate();}
                         System.out.println(Model.allFav.size());}
@@ -152,47 +150,14 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.ViewHolder
                                 holder.itemView.setVisibility(View.GONE);
                                 }
 
-//                                TampilBerita.favUpdate();
                                 break;
                             }
-//                            for (NotifApk notifApk:Model.allNotif){
-//                                if (notifApk.getMessage().equals(berita.getKey())&&fav.getEmail().equals(FirebaseController.getCurrentUserEmail())){
-//                                    activity.deleteData(fav);
-//                                    holder.itemView.setVisibility(View.GONE);
-//                                    TampilBerita.getRvAdaper().notifyDataSetChanged();
-//                                    break;
-//                                }
-//                            }
                         }if(TampilBerita.getRvAdaper()!=null &&preferensi.equals("Fav")){
                             holder.like.setVisibility(View.GONE);
                             TampilBerita.favUpdate();}}
                 }
             });
         }
-//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                if(preferensi.equals("Edit")) {
-//                    AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext());
-//                    alert.setTitle("Perhatian!");
-//                    alert.setMessage("Apakah anda ingin Menghapus Data Tersebut?");
-//                    alert.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            FirebaseController.deleteData(berita);
-//                            Toast.makeText(holder.itemView.getContext(), "Data Berhasil Di Hapus", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//                    alert.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                        }
-//                    });
-//                    alert.show();
-//                }
-//                return false;
-//            }
-//        });
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(holder.itemView.getContext(), ManageBerita.class);
             Model.currentBerita = berita;

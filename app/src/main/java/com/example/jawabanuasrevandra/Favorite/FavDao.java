@@ -21,15 +21,6 @@ public interface FavDao {
     void delete(Fav fav);
 
 
-//    @Query("SELECT * FROM note ORDER BY id ASC")
-//    LiveData<List<Note>> getAllNotes();
-
-//    //Static parameter
-//    @Query("SELECT * FROM note where id = 1 ")
-//    LiveData<List<Note>> getNote();
-//    @Query("SELECT * FROM note where title = 'Rangga' ")
-//    LiveData<List<Note>> getNotes();
-
     //Query ber parameter
     @Query("SELECT EXISTS(SELECT * FROM fav where email = :email and keyBerita = :key LIMIT 1)")
     LiveData<Boolean> isFav(String email, String key);

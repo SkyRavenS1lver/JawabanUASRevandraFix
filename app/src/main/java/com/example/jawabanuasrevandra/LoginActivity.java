@@ -98,23 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
-//        findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                firebaseAuth.createUserWithEmailAndPassword("Revandra@gmail.com", "denpasar").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        Toast.makeText(LoginActivity.this,"Sukses", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }
-//        });
-//        findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                userReference.child("radk111002").setValue(new User("revandra@gmail.com", "denpasar"));
-//            }
-//        });
     }
 
     @Override
